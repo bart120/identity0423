@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: bob
+      POSTGRES_PASSWORD: toto
+      POSTGRES_DB: dbone
+    ports:
+      - 5432:5432
+    volumes:
+      - D:\data:/var/lib/postgresql/data
+    restart: always
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

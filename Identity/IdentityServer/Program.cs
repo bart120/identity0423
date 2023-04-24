@@ -1,9 +1,13 @@
 using IdentityServer;
+using IdentityServer.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// builder.Services.AddDbContext<EFDbContext>(); //pas obligatoire pour IdentityServer
+
 builder.Services.AddControllersWithViews();
+
 
 var app = builder.ConfigureServices().ConfigurePipeline();
 
