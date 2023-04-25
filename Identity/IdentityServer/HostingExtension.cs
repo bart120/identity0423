@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using IdentityServer.Stores;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityServer
@@ -28,7 +29,7 @@ namespace IdentityServer
                 store.DefaultSchema = "operational";
                 store.ConfigureDbContext = db => db.UseNpgsql(app.Configuration.GetConnectionString("IdentityConnection"),
                     sql => sql.MigrationsAssembly(assemblyName));
-            });
+            }).AddTestUsers(MockUsers.Users);
                 // IN MEMORY
                 //.AddInMemoryApiScopes(InMemory.ConfigInMemory.GetScopes())
                 //.AddInMemoryClients(InMemory.ConfigInMemory.GetClients());
