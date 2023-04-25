@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IdentityServer.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServer.Controllers
 {
@@ -8,14 +9,21 @@ namespace IdentityServer.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
-            return View();
+            var model = new LoginViewModel();
+            model.ReturnUrl= returnUrl;
+            return View(model);
         }
 
         [Route("login")]
         [HttpPost]
-        public IActionResult Login()
+        public IActionResult Login(LoginViewModel model)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                //authentification
+
+            }
+            return View(model);
         }
 
         [Route("logout")]
