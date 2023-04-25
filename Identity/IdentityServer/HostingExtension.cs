@@ -10,12 +10,14 @@ namespace IdentityServer
         public static WebApplication ConfigureServices(this WebApplicationBuilder app)
         {
             var assemblyName = typeof(Program).Assembly.GetName().Name;
-
+            
             //Duende.IdentityServer.EntityFramework.DbContexts.PersistedGrantDbContext
             app.Services.AddIdentityServer(conf =>
             {
                 //conf.Endpoints.EnableIntrospectionEndpoint = false;
                 //conf.Endpoints.EnableUserInfoEndpoint = false;
+                conf.UserInteraction.LoginUrl = "/login";
+                conf.UserInteraction.LogoutUrl = "/logout";
             }).AddConfigurationStore(store =>
             {
                 store.DefaultSchema = "configuation";
@@ -37,6 +39,7 @@ namespace IdentityServer
 
         public static WebApplication ConfigurePipeline(this WebApplication app) 
         {
+            app.UseDeveloperExceptionPage();
             app.UseIdentityServer();
 
             return app;

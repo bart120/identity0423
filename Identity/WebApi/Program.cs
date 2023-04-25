@@ -11,13 +11,14 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
 {
     options.Authority = "https://localhost:7151";
     options.RequireHttpsMetadata = true;
-    options.TokenValidationParameters.ValidateAudience = false;
+    options.Audience = "api_demo";
+    options.TokenValidationParameters.ValidateAudience = true;
 });
-builder.Services.AddAuthorization(options =>
+builder.Services.AddAuthorization(/*options =>
     options.AddPolicy("ApiScope", policy =>
     {
         policy.RequireClaim("scope", "api_demo");
-    })
+    })*/
 );
 
 
@@ -36,6 +37,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers().RequireAuthorization("ApiScope");
+app.MapControllers().RequireAuthorization();
 
 app.Run();
