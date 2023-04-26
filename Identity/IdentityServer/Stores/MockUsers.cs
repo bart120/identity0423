@@ -18,9 +18,9 @@ namespace IdentityServer.Stores
                         Password = "bob",
                         Claims =
                         {
-                            new System.Security.Claims.Claim(JwtClaimTypes.Name, "Bob"),
+                            new System.Security.Claims.Claim(JwtClaimTypes.Name, "Bob Léponge"),
                             new System.Security.Claims.Claim(JwtClaimTypes.GivenName, "Bob"),
-                            new System.Security.Claims.Claim(JwtClaimTypes.FamilyName, "Bob"),
+                            new System.Security.Claims.Claim(JwtClaimTypes.FamilyName, "Léponge"),
                             new System.Security.Claims.Claim(JwtClaimTypes.Email, "bob@gmail.com")
                         }
                     }

@@ -1,0 +1,17 @@
+﻿@model WebApp.Models.Wheather
+
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+<h2>Bonjour @User?.Identity?.Name</h2>
+
+<div>
+    <ul>
+        <li>Temp.: @Model.TemperatureC</li>
+        <li>Sum.: @Model.Summary</li>
+
+    </ul>
+</div>
+
+<a asp-action="logout">Se déconnecter</a>

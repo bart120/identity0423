@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
+using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Test;
 using IdentityServer.Models;
@@ -51,12 +52,10 @@ namespace IdentityServer.Controllers
                     var props = new AuthenticationProperties
                     {
                         IsPersistent = true,
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(24)
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30)
                     };
                     //pose du cookie d'authentification
                     await HttpContext.SignInAsync(isuser, null /*props*/);
-
-
 
                     return Redirect(model.ReturnUrl);
                 }
@@ -71,9 +70,27 @@ namespace IdentityServer.Controllers
         }
 
         [Route("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout(string logoutId)
         {
-            return Ok();
+            if (User?.Identity.IsAuthenticated == true)
+            {
+                logoutId ??= await _identity.CreateLogoutContextAsync();
+                await HttpContext.SignOutAsync();
+
+                await _event.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
+                var logout = await _identity.GetLogoutContextAsync(logoutId);
+                var url = logout?.PostLogoutRedirectUri;
+                if (url != null)
+                {
+                    return Redirect(url);
+                }
+                else
+                {
+                    return Redirect("~/");
+                }
+            }
+
+            return Redirect("~/");
         }
     }
 }
