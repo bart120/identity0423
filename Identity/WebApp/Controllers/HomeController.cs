@@ -30,7 +30,7 @@ namespace WebApp.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var u = this.User;
             var auth = await HttpContext.AuthenticateAsync();
-
+            var refre = await HttpContext.GetTokenAsync("refresh_token");
             var weather = (await _weatherService.GetWheather()).First();
 
             return View(weather);

@@ -1,3 +1,4 @@
+using IdentityModel.AspNetCore.AccessTokenManagement;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,7 +19,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = "Cookies";
     options.DefaultChallengeScheme = "oidc";
 })
-    .AddCookie("Cookies", options =>
+    .AddCookie("Cookies")/*, options =>
     {
         options.Events = new CookieAuthenticationEvents
         {
@@ -63,7 +64,7 @@ builder.Services.AddAuthentication(options =>
                 }
             }
         };
-    })
+    })*/
     .AddOpenIdConnect("oidc", options =>
     {
         options.Authority = "https://localhost:7151";
@@ -89,15 +90,18 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-//builder.Services.AddHttpContextAccessor();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddTransient<HttpClientAuthorizationHandler>();
+builder.Services.AddHttpContextAccessor();
+//IUserAccessTokenManagementService
+builder.Services.AddAccessTokenManagement();
+/*builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<HttpClientAuthorizationHandler>();*/
 builder.Services.AddRefitClient<IWeatherService>().ConfigureHttpClient(c =>
 {
     var url = "https://localhost:7252";
     c.BaseAddress = new Uri(url);
     c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-}).AddHttpMessageHandler<HttpClientAuthorizationHandler>();
+}).AddUserAccessTokenHandler();
+    //.AddHttpMessageHandler<HttpClientAuthorizationHandler>();
 
 var app = builder.Build();
 
